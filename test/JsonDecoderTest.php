@@ -83,6 +83,10 @@ class JsonDecoderTest extends TestCase
                 '{"Status": 0,"TC": false,"RD": true, "RA": true, "AD": false,"CD": false,"Question":[{"name": "amphp.org.", "type": 15}],"Answer":[{"name": "amphp.org.", "type": 15, "TTL": 86400, "data": "0 mail.negativeion.net."}]}',
                 3,
             ],
+            [
+                '{"Status": 0,"TC": false,"RD": true,"RA": true,"AD": false,"CD": false,"Question":[ {"name": "daniil.it.","type": 6}],"Answer":[ {"name": "daniil.it.","type": 6,"TTL": 3493,"data": "cruz.ns.cloudflare.com. dns.cloudflare.com. 2031387933 10000 2400 604800 3600"}]}',
+                3,
+            ],
         ];
     }
 

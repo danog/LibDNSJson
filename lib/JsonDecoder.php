@@ -127,6 +127,7 @@ class JsonDecoder
             $labels[] = $last;
         }
         $domainName->setLabels($labels);
+        /* @var \LibDNS\Records\Resource $resource */
         $resource = $this->resourceBuilder->build($record['type']);
         $resource->setName($domainName);
         //$resource->setClass($meta['class']);
@@ -134,12 +135,14 @@ class JsonDecoder
 
         $data = $resource->getData();
 
+        $typeDef = $data->getTypeDefinition();
+        $record['data'] = explode(' ', $record['data'], $typeDef->count());
+
         $fieldDef = $index = null;
-        foreach ($resource->getData()->getTypeDefinition() as $index => $fieldDef) {
+        foreach ($data->getTypeDefinition() as $index => $fieldDef) {
             $field = $this->typeBuilder->build($fieldDef->getType());
-            $this->decodeType($field, $record['data']);
+            $this->decodeType($field, $record['data'][$index]);
             $data->setField($index, $field);
-            break; // For now parse only one field
         }
 
         return $resource;
