@@ -136,7 +136,7 @@ class JsonDecoder
         $data = $resource->getData();
 
         $typeDef = $data->getTypeDefinition();
-        $record['data'] = explode(' ', $record['data'], $typeDef->count());
+        $record['data'] = \explode(' ', $record['data'], $typeDef->count());
 
         $fieldDef = $index = null;
         foreach ($data->getTypeDefinition() as $index => $fieldDef) {
