@@ -64,13 +64,6 @@ class JsonDecoder
     /**
      * Constructor.
      *
-     * @param \LibDNS\Packets\PacketFactory $packetFactory
-     * @param \LibDNS\Messages\MessageFactory $messageFactory
-     * @param \LibDNS\Records\QuestionFactory $questionFactory
-     * @param \LibDNS\Records\ResourceBuilder $resourceBuilder
-     * @param \LibDNS\Records\Types\TypeBuilder $typeBuilder
-     * @param \LibDNS\Decoder\DecodingContextFactory $decodingContextFactory
-     * @param bool $allowTrailingData
      */
     public function __construct(
         PacketFactory $packetFactory,
@@ -91,7 +84,6 @@ class JsonDecoder
      * Decode a question record.
      *
      *
-     * @return \LibDNS\Records\Question
      * @throws \UnexpectedValueException When the record is invalid
      */
     private function decodeQuestionRecord(array $record): Question
@@ -114,7 +106,6 @@ class JsonDecoder
      * Decode a resource record.
      *
      *
-     * @return \LibDNS\Records\Resource
      * @throws \UnexpectedValueException When the record is invalid
      * @throws \InvalidArgumentException When a type subtype is unknown
      */
@@ -155,7 +146,7 @@ class JsonDecoder
      * @throws \UnexpectedValueException When the packet data is invalid
      * @throws \InvalidArgumentException When the Type subtype is unknown
      */
-    private function decodeType(Type $type, $data)
+    private function decodeType(Type $type, string $data): void
     {
         if ($type instanceof Anything) {
             $this->decodeAnything($type, $data);
@@ -184,11 +175,9 @@ class JsonDecoder
      *
      *
      * @param \LibDNS\Records\Types\Anything $anything The object to populate with the result
-     * @param int $length
-     * @return int The number of packet bytes consumed by the operation
      * @throws \UnexpectedValueException When the packet data is invalid
      */
-    private function decodeAnything(Anything $anything, $data)
+    private function decodeAnything(Anything $anything, string $data): void
     {
         $anything->setValue(\hex2bin($data));
     }
@@ -198,11 +187,9 @@ class JsonDecoder
      *
      *
      * @param \LibDNS\Records\Types\BitMap $bitMap The object to populate with the result
-     * @param int $length
-     * @return int The number of packet bytes consumed by the operation
      * @throws \UnexpectedValueException When the packet data is invalid
      */
-    private function decodeBitMap(BitMap $bitMap, $data)
+    private function decodeBitMap(BitMap $bitMap, string $data): void
     {
         $bitMap->setValue(\hex2bin($data));
     }
@@ -212,10 +199,9 @@ class JsonDecoder
      *
      *
      * @param \LibDNS\Records\Types\Char $char The object to populate with the result
-     * @return int The number of packet bytes consumed by the operation
      * @throws \UnexpectedValueException When the packet data is invalid
      */
-    private function decodeChar(Char $char, $result)
+    private function decodeChar(Char $char, string $result): void
     {
         $value = \unpack('C', $result)[1];
         $char->setValue($value);
@@ -226,10 +212,9 @@ class JsonDecoder
      *
      *
      * @param \LibDNS\Records\Types\CharacterString $characterString The object to populate with the result
-     * @return int The number of packet bytes consumed by the operation
      * @throws \UnexpectedValueException When the packet data is invalid
      */
-    private function decodeCharacterString(CharacterString $characterString, $result)
+    private function decodeCharacterString(CharacterString $characterString, string $result): void
     {
         $characterString->setValue($result);
     }
@@ -239,10 +224,9 @@ class JsonDecoder
      *
      *
      * @param \LibDNS\Records\Types\DomainName $domainName The object to populate with the result
-     * @return int The number of packet bytes consumed by the operation
      * @throws \UnexpectedValueException When the packet data is invalid
      */
-    private function decodeDomainName(DomainName $domainName, $result)
+    private function decodeDomainName(DomainName $domainName, string $result): void
     {
         $labels = \explode('.', $result);
         if (!empty($last = \array_pop($labels))) {
@@ -257,10 +241,9 @@ class JsonDecoder
      *
      *
      * @param \LibDNS\Records\Types\IPv4Address $ipv4Address The object to populate with the result
-     * @return int The number of packet bytes consumed by the operation
      * @throws \UnexpectedValueException When the packet data is invalid
      */
-    private function decodeIPv4Address(IPv4Address $ipv4Address, $result)
+    private function decodeIPv4Address(IPv4Address $ipv4Address, string $result): void
     {
         $octets = \unpack('C4', \inet_pton($result));
         $ipv4Address->setOctets($octets);
@@ -271,10 +254,9 @@ class JsonDecoder
      *
      *
      * @param \LibDNS\Records\Types\IPv6Address $ipv6Address The object to populate with the result
-     * @return int The number of packet bytes consumed by the operation
      * @throws \UnexpectedValueException When the packet data is invalid
      */
-    private function decodeIPv6Address(IPv6Address $ipv6Address, $result)
+    private function decodeIPv6Address(IPv6Address $ipv6Address, string $result): void
     {
         $shorts = \unpack('n8', \inet_pton($result));
         $ipv6Address->setShorts($shorts);
@@ -285,12 +267,11 @@ class JsonDecoder
      *
      *
      * @param \LibDNS\Records\Types\Long $long The object to populate with the result
-     * @return int The number of packet bytes consumed by the operation
      * @throws \UnexpectedValueException When the packet data is invalid
      */
-    private function decodeLong(Long $long, $result)
+    private function decodeLong(Long $long, string $result): void
     {
-        $long->setValue((int) $result);
+        $long->setValue($result);
     }
 
     /**
@@ -298,20 +279,17 @@ class JsonDecoder
      *
      *
      * @param \LibDNS\Records\Types\Short $short The object to populate with the result
-     * @return int The number of packet bytes consumed by the operation
      * @throws \UnexpectedValueException When the packet data is invalid
      */
-    private function decodeShort(Short $short, $result)
+    private function decodeShort(Short $short, string $result): void
     {
-        $short->setValue((int) $result);
+        $short->setValue($result);
     }
 
     /**
      * Decode a Message from JSON-encoded string.
      *
-     * @param string $data The data string to decode
      * @param int $requestId The message ID to set
-     * @return \LibDNS\Messages\Message
      * @throws \UnexpectedValueException When the packet data is invalid
      * @throws \InvalidArgumentException When a type subtype is unknown
      */

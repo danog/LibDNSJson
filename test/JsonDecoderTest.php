@@ -12,8 +12,6 @@ class JsonDecoderTest extends TestCase
     /**
      * Test decoding of valid JSON DNS payloads.
      *
-     * @param string $message
-     * @param int $requestId
      * @return void
      *
      * @dataProvider provideValidJsonPayloads
@@ -89,7 +87,6 @@ class JsonDecoderTest extends TestCase
             ],
         ];
     }
-
 
     /**
      * Test decoding of invalid JSON DNS payloads.

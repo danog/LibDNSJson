@@ -26,7 +26,6 @@ class QueryEncoderFactory
     /**
      * Create a new Encoder object.
      *
-     * @return \LibDNS\Encoder\Encoder
      */
     public function create(): QueryEncoder
     {

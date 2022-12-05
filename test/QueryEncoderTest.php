@@ -12,7 +12,6 @@ class QueryEncoderTest extends TestCase
     /**
      * Test encoding of valid DNS message payloads.
      *
-     * @param string $message
      * @return void
      *
      * @dataProvider provideValidQueryPayloads
@@ -26,7 +25,7 @@ class QueryEncoderTest extends TestCase
         $encoder = (new QueryEncoderFactory)->create();
         $request = $encoder->encode($response);
 
-        $this->assertInternalType('string', $request, "Got a ".\gettype($request)." instead of a string");
+        $this->assertIsString($request, "Got a ".\gettype($request)." instead of a string");
         \parse_str($request, $output);
         $this->assertNotEmpty($output);
         $this->assertArrayHasKey('cd', $output);
@@ -103,7 +102,6 @@ class QueryEncoderTest extends TestCase
     /**
      * Test query encoding of invalid DNS payloads.
      *
-     * @param $request
      * @return void
      *
      * @dataProvider provideInvalidQueryPayloads

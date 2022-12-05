@@ -30,7 +30,6 @@ class QueryEncoder
      * Encode a Message to URL payload.
      *
      * @param \LibDNS\Messages\Message $message  The Message to encode
-     * @return string
      */
     public function encode(Message $message): string
     {
