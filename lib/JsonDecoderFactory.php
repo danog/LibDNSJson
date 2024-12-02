@@ -34,9 +34,9 @@ class JsonDecoderFactory
     /**
      * Create a new JsonDecoder object.
      *
-     * @param \LibDNS\Records\TypeDefinitions\TypeDefinitionManager $typeDefinitionManager
+     * @param ?\LibDNS\Records\TypeDefinitions\TypeDefinitionManager $typeDefinitionManager
      */
-    public function create(TypeDefinitionManager $typeDefinitionManager = null): JsonDecoder
+    public function create(?TypeDefinitionManager $typeDefinitionManager = null): JsonDecoder
     {
         $typeBuilder = new TypeBuilder(new TypeFactory);
 
